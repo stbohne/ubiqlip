@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: de.stefanbohne.ubiqlip.ClientApplication
+Class-Path: slf4j-jdk14-1.6.5.jar slf4j-api-1.6.5.jar commons-io-2.3.jar
+
