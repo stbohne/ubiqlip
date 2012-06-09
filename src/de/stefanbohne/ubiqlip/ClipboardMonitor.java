@@ -91,7 +91,6 @@ public class ClipboardMonitor {
 						}
 					}
 					System.out.println("---");
-					cur.debugPrint();
 					old = cur;
 				}
 			}

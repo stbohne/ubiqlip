@@ -182,7 +182,6 @@ public class ClientApplication {
 						boolean succeeded = false;
 						while (!succeeded)
 							try {
-								clipboardData.debugPrint();
 								clipboard.setContents(clipboardData2Transferable(clipboardData), null);
 								assert(transferable2ClipboardData(clipboard.getContents(null)).equals(clipboardData));
 								succeeded = true;

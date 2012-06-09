@@ -136,7 +136,6 @@ public class Ubiqlipboard {
 						if (accept) {
 							serial = changed.serial;
 							currentClipboardData = ((ClipboardChanged)message).data;
-							currentClipboardData.debugPrint();
 						}
 					}
 					if (accept)
@@ -197,7 +196,6 @@ public class Ubiqlipboard {
 	public synchronized void setClipboardData(ClipboardData data) {
 		if (!currentClipboardData.equals(data)) {
 			logger.debug("Clipboard data changed");
-			data.debugPrint();
 			serial += 1;
 			currentClipboardData = data;
 			for (SocketChannel peer : peers)
