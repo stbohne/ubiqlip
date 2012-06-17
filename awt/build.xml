@@ -1,0 +1,44 @@
+<project name="ubiqlip" default="dist" basedir=".">
+  <property name="src" location="src"/>
+  <property name="ubiqlip" location="../ubiqlip/src"/>
+  <property name="libs" location="../ubiqlip/libs"/>
+  <property name="build" location="build"/>
+  <property name="dist"  location="dist"/>
+  <property name="version" value="alpha1"/>
+
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${build}"/>
+  	<mkdir dir="${build}/META-INF"/>
+  </target>
+
+  <target name="compile" depends="init">
+    <javac destdir="${build}" classpath="${libs}/slf4j-api-1.6.5.jar;${libs}/slf4j-jdk14-1.6.5.jar;${libs}/commons-io-2.3.jar;${libs}/commons-lang-2.6.jar">
+        <src path="${src}"/>
+        <src path="${ubiqlip}"/>
+    </javac>
+  	<copy todir="${build}">
+  	    <fileset dir="${src}" excludes="**/*.java"/>
+    </copy>
+  </target>
+
+  <target name="dist" depends="compile">
+  	<taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask"
+  	        classpath="lib/jarjar.jar"/>
+    <jarjar jarfile="${dist}/ubiqlip-${version}-${DSTAMP}.jar">
+        <fileset dir="${build}"/>
+    	<zipfileset src="${libs}/slf4j-api-1.6.5.jar"/>
+    	<zipfileset src="${libs}/slf4j-jdk14-1.6.5.jar"/>
+        <zipfileset src="${libs}/commons-io-2.3.jar"/>
+		<zipfileset src="${libs}/commons-lang-2.6.jar"/>
+    	<manifest>
+    		<attribute name="Main-Class" value="de.stefanbohne.ubiqlip.awt.ClientApplication"/>
+    	</manifest>
+    </jarjar>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+</project>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Ubiqlip</string>
+    <string name="service_name">Ubiqlip Clipboard Monitor</string>
+
+</resources>
