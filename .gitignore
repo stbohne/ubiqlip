@@ -8,3 +8,12 @@
 /bin
 /build
 /dist
+/awt/dist
+/awt/bin
+/awt/build
+/android/bin
+/android/gen
+/android/.classpath
+/android/.project
+/awt/.classpath
+/awt/.project
