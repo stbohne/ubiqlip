@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -45,7 +46,6 @@ import de.stefanbohne.ubiqlip.Ubiqlipboard;
 import de.stefanbohne.ubiqlip.UbiqlipboardChangedListener;
 import de.stefanbohne.ubiqlip.messaging.ClipboardData;
 import de.stefanbohne.ubiqlip.messaging.S11nInput;
-import de.stefanbohne.ubiqlip.messaging.S11nOutput;
 
 public class ClientApplication {
 	private final static Logger logger = LoggerFactory.getLogger(ClientApplication.class);
@@ -112,23 +112,23 @@ public class ClientApplication {
 
 	}
 	static ClipboardData transferable2ClipboardData(Transferable transferable) {
+		DataFlavor textFlavor = DataFlavor.getTextPlainUnicodeFlavor();
 		Map<String, byte[]> data = new HashMap<String, byte[]>();
-		for (DataFlavor flavor : transferable.getTransferDataFlavors())
+		if (transferable.isDataFlavorSupported(textFlavor)) {
+			ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 			try {
-				if (flavor.getDefaultRepresentationClass() == String.class) {
-					ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-					(new S11nOutput(bytes)).writeString((String)transferable.getTransferData(flavor));
-					if (bytes.size() > 0)
-						data.put(flavor.getMimeType(), bytes.toByteArray());
-				} else if (flavor.getDefaultRepresentationClass() == InputStream.class) {
-					ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-					IOUtils.copy((InputStream)transferable.getTransferData(flavor), bytes);
-					if (bytes.size() > 0)
-						data.put(flavor.getMimeType(), bytes.toByteArray());
-				}
-			} catch (Exception e) {
-				// ignore
+				IOUtils.copy((InputStream)transferable.getTransferData(textFlavor), bytes);
+			} catch (IOException e) {
+
+			} catch (UnsupportedFlavorException e) {
+
 			}
+			try {
+				data.put("text/plain; charset=utf-8", new String(bytes.toByteArray(), textFlavor.getParameter("charset")).getBytes("UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+
+			}
+		}
 		return new ClipboardData(data);
 	}
 	static Transferable clipboardData2Transferable(ClipboardData data) {
