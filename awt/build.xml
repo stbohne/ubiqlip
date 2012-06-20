@@ -4,7 +4,7 @@
   <property name="libs" location="../ubiqlip/libs"/>
   <property name="build" location="build"/>
   <property name="dist"  location="dist"/>
-  <property name="version" value="alpha1"/>
+  <property name="version" value="alpha3"/>
 
   <target name="init">
     <tstamp/>
